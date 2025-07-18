@@ -1,156 +1,263 @@
-# Pixel-plus-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>PixelPulse</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Tailwind CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <!-- FontAwesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>body{font-family:'Inter',sans-serif}</style>
+  <meta charset="UTF-8">
+  <title>Zyntra Book Library</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { background: #181c24; color: #fff; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; }
+    header { background: linear-gradient(90deg, #00c3ff, #fc00ff); padding: 20px 0 10px 0; text-align: center; font-size: 2.2rem; font-weight: bold; letter-spacing: 2px; box-shadow: 0 2px 8px #0004; }
+    .logo { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 8px; }
+    .logo-img { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #00c3ff 60%, #fc00ff 100%); display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: bold; color: #fff; box-shadow: 0 2px 8px #0003; border: 2px solid #fff3; }
+    .logo-text { font-size: 2rem; font-weight: bold; color: #fff; letter-spacing: 1px; text-shadow: 0 2px 8px #fc00ff44; }
+    .subtitle { font-size: 1.1rem; color: #e0e0e0; margin-bottom: 8px; letter-spacing: 1px; }
+    .categories { display: flex; flex-wrap: wrap; justify-content: center; margin: 30px 0 0 0; gap: 15px; }
+    .category-btn { background: #232946; color: #fff; border: none; padding: 10px 22px; border-radius: 25px; font-size: 1.1rem; cursor: pointer; transition: background 0.2s; outline: none; box-shadow: 0 2px 8px #0002; }
+    .category-btn.active, .category-btn:hover { background: linear-gradient(90deg, #00c3ff, #fc00ff); color: #fff; }
+    .books-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 25px; margin: 35px 0 50px 0; }
+    .book-card { background: #232946; border-radius: 18px; box-shadow: 0 4px 16px #0003; width: 260px; padding: 18px 16px 20px 16px; display: flex; flex-direction: column; align-items: center; transition: transform 0.2s; position: relative; }
+    .book-card:hover { transform: translateY(-6px) scale(1.03); box-shadow: 0 8px 24px #00c3ff44; }
+    .book-cover { width: 120px; height: 160px; object-fit: cover; border-radius: 10px; margin-bottom: 14px; box-shadow: 0 2px 8px #fc00ff44; background: #fff; }
+    .book-title { font-size: 1.1rem; font-weight: bold; margin-bottom: 6px; text-align: center; }
+    .book-author { font-size: 0.98rem; color: #b8b8ff; margin-bottom: 8px; text-align: center; }
+    .book-desc { font-size: 0.97rem; color: #e0e0e0; margin-bottom: 12px; text-align: center; min-height: 48px; }
+    .read-btn { background: linear-gradient(90deg, #00c3ff, #fc00ff); color: #fff; border: none; padding: 8px 22px; border-radius: 20px; font-size: 1rem; cursor: pointer; font-weight: bold; transition: background 0.2s; margin-top: 6px; box-shadow: 0 2px 8px #0002; text-decoration: none; display: inline-block; }
+    .read-btn:hover { background: linear-gradient(90deg, #fc00ff, #00c3ff); }
+    .zyntra-badge { position: absolute; top: 10px; right: 10px; background: linear-gradient(90deg, #00c3ff, #fc00ff); color: #fff; font-size: 0.85rem; font-weight: bold; padding: 3px 10px; border-radius: 12px; letter-spacing: 1px; box-shadow: 0 2px 8px #0002; opacity: 0.85; }
+    /* Modal Styles */
+    .modal-bg { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000a; z-index: 1000; align-items: center; justify-content: center; }
+    .modal { background: #232946; border-radius: 18px; max-width: 95vw; width: 420px; max-height: 90vh; overflow-y: auto; box-shadow: 0 8px 32px #0008; padding: 24px 20px 18px 20px; position: relative; }
+    .modal .close-btn { position: absolute; top: 12px; right: 18px; background: #fc00ff; color: #fff; border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 1.3rem; cursor: pointer; }
+    .modal .modal-title { font-size: 1.3rem; font-weight: bold; margin-bottom: 8px; }
+    .modal .modal-author { font-size: 1rem; color: #b8b8ff; margin-bottom: 10px; }
+    .modal .modal-story { font-size: 1.05rem; color: #fff; margin-bottom: 10px; white-space: pre-line; }
+    .modal .modal-cover { width: 120px; height: 160px; object-fit: cover; border-radius: 10px; margin-bottom: 14px; box-shadow: 0 2px 8px #fc00ff44; background: #fff; display: block; margin-left: auto; margin-right: auto; }
+    @media (max-width: 700px) {
+      .books-container { flex-direction: column; align-items: center; }
+      .book-card { width: 90vw; max-width: 320px; }
+      .logo-text { font-size: 1.3rem; }
+      .modal { width: 98vw; padding: 12px 6px 10px 6px; }
+    }
+  </style>
 </head>
-<body class="bg-slate-100 text-slate-800">
-
-<!-- ===== Header ===== -->
-<header class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-6 shadow-lg">
-  <h1 class="text-3xl font-bold">PixelPulse</h1>
-  <p class="text-sm opacity-90">Daily quotes, poetry, tips, recipes & more...</p>
-</header>
-
-<!-- ===== Auto-Generated Cards ===== -->
-<section class="p-4 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-
-  <!-- Quotes -->
-  <div class="bg-white rounded-xl shadow p-4">
-    <h2 class="font-semibold mb-2 text-indigo-600">
-      <i class="fas fa-quote-left"></i> Quote
-    </h2>
-    <p id="quoteText" class="italic"></p>
-    <p id="quoteAuthor" class="text-xs text-right mt-2"></p>
-  </div>
-
-  <!-- Poetry -->
-  <div class="bg-white rounded-xl shadow p-4">
-    <h2 class="font-semibold mb-2 text-pink-600">
-      <i class="fas fa-feather-alt"></i> Poetry
-    </h2>
-    <p id="poetryText" class="italic"></p>
-  </div>
-
-  <!-- Tips -->
-  <div class="bg-white rounded-xl shadow p-4">
-    <h2 class="font-semibold mb-2 text-green-600">
-      <i class="fas fa-lightbulb"></i> Tip
-    </h2>
-    <p id="tipText"></p>
-  </div>
-
-  <!-- Recipe -->
-  <div class="bg-white rounded-xl shadow p-4">
-    <h2 class="font-semibold mb-2 text-orange-600">
-      <i class="fas fa-utensils"></i> Recipe
-    </h2>
-    <p id="recipeTitle"></p>
-  </div>
-
-  <!-- News -->
-  <div class="bg-white rounded-xl shadow p-4">
-    <h2 class="font-semibold mb-2 text-red-600">
-      <i class="fas fa-newspaper"></i> News
-    </h2>
-    <p id="newsHeadline"></p>
-  </div>
-
-</section>
-
-<!-- ===== User Post Form ===== -->
-<section class="p-4">
-  <div class="max-w-lg mx-auto bg-white rounded-xl shadow p-6 space-y-4">
-    <h2 class="text-xl font-semibold"><i class="fas fa-edit"></i> Add Your Post</h2>
-    <form id="userForm" class="space-y-3">
-      <select name="type" class="w-full border rounded px-3 py-2">
-        <option>Quote</option>
-        <option>Poetry</option>
-        <option>Tip</option>
-        <option>Recipe</option>
-        <option>News</option>
-      </select>
-      <textarea name="text" placeholder="Write something..." class="w-full border rounded px-3 py-2" required></textarea>
-      <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded">Save</button>
-    </form>
-
-    <!-- Display Saved Posts -->
-    <div id="savedPosts" class="mt-4 space-y-2 text-sm"></div>
-  </div>
-</section>
-
-<script>
-/* ===== Auto Data ===== */
-const quotes = [
-  "Stay hungry, stay foolish. — Steve Jobs",
-  "Simplicity is the ultimate sophistication. — Leonardo da Vinci",
-  "The best way to predict the future is to invent it. — Alan Kay"
-];
-
-const poetries = [
-  "The moon whispers secrets to the silent sea...",
-  "In every shadow, a story waits to be told.",
-  "Stars write poems on the canvas of night."
-];
-
-const tips = [
-  "Drink 8 glasses of water daily.",
-  "Take a 5-minute break every hour while working.",
-  "Read one page of a book before bed."
-];
-
-const recipes = [
-  "Avocado Toast with Chili Flakes",
-  "5-Minute Garlic Butter Pasta",
-  "Berry-Banana Smoothie Bowl"
-];
-
-const news = [
-  "AI writes its first novel, critics amazed.",
-  "Breakthrough in battery tech promises 1000-mile EVs.",
-  "Global summit on climate action begins today."
-];
-
-function pick(arr){return arr[Math.floor(Math.random()*arr.length)];}
-
-document.getElementById('quoteText').textContent = pick(quotes);
-document.getElementById('poetryText').textContent = pick(poetries);
-document.getElementById('tipText').textContent = pick(tips);
-document.getElementById('recipeTitle').textContent = pick(recipes);
-document.getElementById('newsHeadline').textContent = pick(news);
-
-/* ===== User Posts ===== */
-const form = document.getElementById('userForm');
-const list = document.getElementById('savedPosts');
-
-function renderPosts(){
-  const posts = JSON.parse(localStorage.getItem('posts')||'[]');
-  list.innerHTML = posts.map(p=>`
-    <div class="border-l-4 border-indigo-400 pl-2">
-      <strong>${p.type}:</strong> ${p.text}
+<body>
+  <header>
+    <div class="logo">
+      <div class="logo-img">Z</div>
+      <div class="logo-text">Zyntra Book Library</div>
     </div>
-  `).join('');
-}
+    <div class="subtitle">Read, Learn & Enjoy! | Kids • Stories • Science • Islamic</div>
+  </header>
+  <div class="categories" id="categories"></div>
+  <div class="books-container" id="books"></div>
 
-form.addEventListener('submit', e=>{
-  e.preventDefault();
-  const data = Object.fromEntries(new FormData(form));
-  const posts = JSON.parse(localStorage.getItem('posts')||'[]');
-  posts.unshift(data);
-  localStorage.setItem('posts', JSON.stringify(posts));
-  form.reset();
-  renderPosts();
-});
-renderPosts();
-</script>
+  <!-- Modal for Book Story -->
+  <div class="modal-bg" id="modal-bg">
+    <div class="modal" id="modal">
+      <button class="close-btn" onclick="closeModal()">&times;</button>
+      <img class="modal-cover" id="modal-cover" src="" alt="">
+      <div class="modal-title" id="modal-title"></div>
+      <div class="modal-author" id="modal-author"></div>
+      <div class="modal-story" id="modal-story"></div>
+    </div>
+  </div>
+
+  <script>
+    // Book data with stories
+    const booksData = [
+      // Kids Books
+      {
+        category: "Kids",
+        title: "The Rainbow Adventure",
+        author: "Zyntra",
+        desc: "Join Lily and her cat on a magical journey across a rainbow to find the colors of happiness.",
+        cover: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
+        story: `Lily loved rainbows. One rainy day, she saw a bright rainbow outside her window. Her cat, Whiskers, meowed, "Let's find the end of the rainbow!" Together, they walked through the garden, over puddles, and under the sun. At the end, they found a pot of colors! Lily painted her room with the colors of happiness. Every time it rained, she remembered her magical adventure with Whiskers.`
+      },
+      {
+        category: "Kids",
+        title: "Bunny's Lost Carrot",
+        author: "Zyntra",
+        desc: "Bunny can't find his favorite carrot! Help him search the garden and meet new friends.",
+        cover: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80",
+        story: `Bunny woke up and couldn't find his favorite carrot. He asked Squirrel, "Have you seen my carrot?" Squirrel shook his head. Bunny asked Bird, but Bird hadn't seen it either. Finally, Bunny found his carrot under a pile of leaves. He shared it with his friends, and they all had a picnic together!`
+      },
+      {
+        category: "Kids",
+        title: "Counting with Colors",
+        author: "Zyntra",
+        desc: "Learn to count from 1 to 10 with colorful animals and fun rhymes.",
+        cover: "https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=400&q=80",
+        story: `1 red bird sings a song,\n2 blue fish swim along,\n3 green frogs jump so high,\n4 yellow bees buzz by,\n5 orange cats chase a ball,\n6 purple dogs hear the call,\n7 pink pigs roll in the sun,\n8 brown cows walk and run,\n9 white sheep sleep in line,\n10 black horses feel just fine!`
+      },
+      {
+        category: "Kids",
+        title: "The Magic Shoes",
+        author: "Zyntra",
+        desc: "A pair of magic shoes takes Sara to a world of dreams and adventure.",
+        cover: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80",
+        story: `Sara found a pair of shiny shoes in her closet. When she wore them, she could jump over clouds and dance with stars. Every night, the shoes took her to a new dreamland. Sara learned that with a little imagination, every day can be magical!`
+      },
+      {
+        category: "Kids",
+        title: "The Lost Teddy",
+        author: "Zyntra",
+        desc: "Ali is sad when his teddy goes missing. Will he find it before bedtime?",
+        cover: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80",
+        story: `Ali loved his teddy bear. One evening, he couldn't find it anywhere. He looked under the bed, behind the door, and in the closet. Finally, he found Teddy sitting on the bookshelf, reading a story! Ali hugged Teddy and promised to always keep him close.`
+      },
+      {
+        category: "Kids",
+        title: "The Little Star",
+        author: "Zyntra",
+        desc: "A tiny star feels lonely until it discovers the power of friendship in the night sky.",
+        cover: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
+        story: `A little star twinkled alone in the sky. One night, the moon said, "Why don't you shine with the other stars?" The little star joined them and made new friends. Together, they lit up the night and made the world smile.`
+      },
+      // Stories
+      {
+        category: "Stories",
+        title: "The Clever Fox",
+        author: "Zyntra",
+        desc: "A clever fox outsmarts a hungry wolf in this classic tale of wit and wisdom.",
+        cover: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=400&q=80",
+        story: `A hungry wolf tried to catch a clever fox. The fox said, "Let's race to the river. If you win, you can eat me." The wolf agreed. The fox ran fast and hid behind a tree. The wolf fell into the river! The fox laughed and ran home safely.`
+      },
+      {
+        category: "Stories",
+        title: "The Honest Woodcutter",
+        author: "Zyntra",
+        desc: "A story about honesty and kindness from the magical Zyntra forest.",
+        cover: "https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=400&q=80",
+        story: `A woodcutter dropped his axe into the river. A fairy appeared and offered him a golden axe. The woodcutter said, "That's not mine." She offered a silver axe. He said, "That's not mine." Finally, she gave him his old axe. The fairy rewarded his honesty with all three axes!`
+      },
+      {
+        category: "Stories",
+        title: "The Lion and the Mouse",
+        author: "Zyntra",
+        desc: "A tiny mouse helps a mighty lion. A story of courage and gratitude.",
+        cover: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80",
+        story: `A lion caught a mouse. The mouse begged, "Please let me go. I might help you one day." The lion laughed but let him go. Later, the lion was trapped in a net. The mouse chewed the ropes and set the lion free.`
+      },
+      {
+        category: "Stories",
+        title: "The Ant and the Dove",
+        author: "Zyntra",
+        desc: "A story of friendship and helping each other in the Zyntra woods.",
+        cover: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
+        story: `An ant fell into a stream. A dove dropped a leaf to help the ant float. Later, a hunter aimed at the dove. The ant bit the hunter's foot, and the dove flew away safely.`
+      },
+      // Science
+      {
+        category: "Science",
+        title: "What is the Solar System?",
+        author: "Zyntra",
+        desc: "Learn about the sun, planets, and stars in our amazing solar system.",
+        cover: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=400&q=80",
+        story: `The solar system is made up of the sun and everything that orbits around it: eight planets, moons, asteroids, and comets. The sun is a big ball of hot gas. The planets are Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, and Neptune.`
+      },
+      {
+        category: "Science",
+        title: "The Water Cycle",
+        author: "Zyntra",
+        desc: "How does water travel from the sky to the ground and back? Discover the water cycle!",
+        cover: "https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=400&q=80",
+        story: `The water cycle is how water moves from the ground to the sky and back again. Water evaporates from lakes and oceans, forms clouds, and falls as rain. The rainwater flows into rivers and lakes, and the cycle starts again!`
+      },
+      {
+        category: "Science",
+        title: "Animals and Their Homes",
+        author: "Zyntra",
+        desc: "Discover where different animals live and how they build their homes.",
+        cover: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
+        story: `Birds build nests in trees. Rabbits live in burrows underground. Bees make hives. Fish live in water. Every animal has a special home that keeps it safe and comfortable.`
+      },
+      // Islamic
+      {
+        category: "Islamic",
+        title: "The Story of Prophet Yunus (AS)",
+        author: "Zyntra",
+        desc: "Learn about the patience and faith of Prophet Yunus (AS) in this inspiring story.",
+        cover: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80",
+        story: `Prophet Yunus (AS) was sent to guide his people. When they didn't listen, he left and was swallowed by a big fish. He prayed to Allah and was forgiven. He returned to his people, who then believed in his message.`
+      },
+      {
+        category: "Islamic",
+        title: "Five Pillars of Islam",
+        author: "Zyntra",
+        desc: "An easy guide to the five pillars of Islam for kids and families.",
+        cover: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80",
+        story: `The five pillars of Islam are:\n1. Shahada (Faith)\n2. Salah (Prayer)\n3. Zakat (Charity)\n4. Sawm (Fasting)\n5. Hajj (Pilgrimage)\nThese pillars help Muslims live a good and faithful life.`
+      },
+      {
+        category: "Islamic",
+        title: "Good Manners in Islam",
+        author: "Zyntra",
+        desc: "Learn about kindness, honesty, and respect in Islam with Zyntra's guide.",
+        cover: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
+        story: `Islam teaches us to be kind, honest, and respectful. Always say "please" and "thank you," help others, and speak the truth. Good manners make us better Muslims and better people.`
+      }
+    ];
+
+    // Get unique categories
+    const categories = [...new Set(booksData.map(book => book.category))];
+
+    // Render category buttons
+    const categoriesDiv = document.getElementById('categories');
+    categories.forEach((cat, idx) => {
+      const btn = document.createElement('button');
+      btn.className = 'category-btn' + (idx === 0 ? ' active' : '');
+      btn.innerText = cat;
+      btn.onclick = () => showCategory(cat, btn);
+      categoriesDiv.appendChild(btn);
+    });
+
+    // Show books for selected category
+    function showCategory(category, btn) {
+      document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const books = booksData.filter(book => book.category === category);
+      renderBooks(books);
+    }
+
+    // Render books
+    function renderBooks(books) {
+      const booksDiv = document.getElementById('books');
+      booksDiv.innerHTML = '';
+      books.forEach((book, idx) => {
+        const card = document.createElement('div');
+        card.className = 'book-card';
+        card.innerHTML = `
+          <div class="zyntra-badge">Zyntra</div>
+          <img class="book-cover" src="${book.cover}" alt="${book.title}">
+          <div class="book-title">${book.title}</div>
+          <div class="book-author">by ${book.author}</div>
+          <div class="book-desc">${book.desc}</div>
+          <button class="read-btn" onclick="openModal(${booksData.indexOf(book)})">Read Online</button>
+        `;
+        booksDiv.appendChild(card);
+      });
+    }
+
+    // Modal functions
+    function openModal(idx) {
+      const book = booksData[idx];
+      document.getElementById('modal-title').innerText = book.title;
+      document.getElementById('modal-author').innerText = "by " + book.author;
+      document.getElementById('modal-story').innerText = book.story;
+      document.getElementById('modal-cover').src = book.cover;
+      document.getElementById('modal-bg').style.display = 'flex';
+    }
+    function closeModal() {
+      document.getElementById('modal-bg').style.display = 'none';
+    }
+    // Close modal on background click
+    document.getElementById('modal-bg').onclick = function(e) {
+      if (e.target === this) closeModal();
+    };
+
+    // Show first category by default
+    renderBooks(booksData.filter(book => book.category === categories[0]));
+  </script>
 </body>
 </html>
